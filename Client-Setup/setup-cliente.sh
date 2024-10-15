@@ -36,7 +36,7 @@ else
 fi
 
 # Diretório do repositório de Python Git
-REPO_DIR_PY="/ServGuard-Python"
+REPO_DIR_PY="$HOME/ServGuard-Python"
 
 # Verifica se o diretório do repositório PY existe
 if [ -d "$REPO_DIR_PY" ]; then
@@ -48,8 +48,20 @@ else
     cd "$REPO_DIR_PY"
 fi
 
+# Verifica e executa o script Python
+SCRIPT_PYTHON="$REPO_DIR_PY/setup-inicial.py"
+
+if [ -f "$SCRIPT_PYTHON" ]; then
+    echo "Executando script Python..."
+    cd "$REPO_DIR_PY" 
+    pip install -r requirements.txt
+    python3 "$SCRIPT_PYTHON"
+else
+    echo "Script Python não encontrado no caminho: $SCRIPT_PYTHON."
+fi
+
 # Diretório do repositório de Kotlin Git
-REPO_DIR_KT="/ServGuard-Kotlin"
+REPO_DIR_KT="$HOME/ServGuard-Kotlin"
 
 # Verifica se o diretório do repositório KT existe
 if [ -d "$REPO_DIR_KT" ]; then
@@ -71,14 +83,4 @@ else
     echo "Arquivo .jar não encontrado no caminho: $JAR_FILE."
 fi
 
-# Verifica e executa o script Python
-SCRIPT_PYTHON="$REPO_DIR_PY/setup-inicial.py"
 
-if [ -f "$SCRIPT_PYTHON" ]; then
-    echo "Executando script Python..."
-    cd "$REPO_DIR_PY" 
-    pip install -r requirements.txt
-    python3 "$SCRIPT_PYTHON"
-else
-    echo "Script Python não encontrado no caminho: $SCRIPT_PYTHON."
-fi
