@@ -49,40 +49,45 @@ sudo systemctl start docker
 sudo systemctl enable docker
 
 echo '========================================================================================================='
+echo 'instalando docker compose'
+echo '========================================================================================================='
+
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+echo '========================================================================================================='
+echo 'verificando se foi instalado'
+echo '========================================================================================================='
+
+docker-compose version
+
+echo '========================================================================================================='
 echo 'Clonando repositorio no github: ServGuard'
 echo '========================================================================================================='
 
-git clone https://github.com/EduardoAAzevedo/ServGuard.git
+git clone https://github.com/ServGuard-org/ServGuard-WebSite.git
+git clone https://github.com/ServGuard-org/ServGuard-Setups.git
 
 echo '========================================================================================================='
-echo 'Mudando de diretorio'
+echo 'Criando novo e mudando de diretorio'
 echo '========================================================================================================='
 
-cd /home/ubuntu/ServGuard/setup/
+cd /home/ubuntu/ServGuard-WebSite
 
 echo '========================================================================================================='
-echo 'Buildando as duas imagens, a partir dos dockerfiles'
+echo 'Rodando docker-compose'
 echo '========================================================================================================='
 
-sudo docker build -f /home/ubuntu/ServGuard/setup/dockerfile-node -t servguard-server-image .
-sudo docker build -f /home/ubuntu/ServGuard/setup/dockerfile-mysql -t servguard-database-image .
+sudo docker-compose up -d
 
 echo '========================================================================================================='
-echo 'Verificando se as imagens foram criadas'
+echo 'Listando as imagens'
+echo '========================================================================================================='
+
 sudo docker images
-echo '========================================================================================================='
-
-echo '========================================================================================================='
-echo 'Criando os dois containers e a rede interna, a partir das imagens'
-echo '========================================================================================================='
-
-sudo docker network create servguard-network
-
-sudo docker run -d --name servguard-database --network servguard-network -p 3306:3306 servguard-database-image
-
-sudo docker run -d --name servguard-server --network servguard-network -p 8080:8080 servguard-server-image
 
 echo '========================================================================================================='
 echo 'Verificando se os containers foram criados'
-sudo docker ps -a
 echo '========================================================================================================='
+
+sudo docker ps -a
