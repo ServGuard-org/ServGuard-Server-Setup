@@ -72,7 +72,7 @@ echo '==========================================================================
 echo 'Rodando docker-compose'
 echo '========================================================================================================='
 
-docker-compose up -d || { echo "Erro ao executar docker-compose"; exit 1; }
+docker-compose -f docker-compose-ee.yml up -d || { echo "Erro ao executar docker-compose"; exit 1; }
 
 echo '========================================================================================================='
 echo 'Listando as imagens'

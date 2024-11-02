@@ -1,5 +1,3 @@
-version: '1'
-
 services:
   website:
     image: eduardoaazevedo/img-site-servguard:latest
@@ -9,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - database
     networks:
       - servguard-network
 
