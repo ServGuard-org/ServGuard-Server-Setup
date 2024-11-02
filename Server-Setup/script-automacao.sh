@@ -4,29 +4,24 @@ echo '==========================================================================
 echo 'Iniciando script de automacao' 
 echo '========================================================================================================='
 
-sudo apt upgrade && sudo apt update -y
+sudo apt update && sudo apt upgrade -y
 
 echo '========================================================================================================='
 echo 'Iniciando alteracoes de senha'
 echo '========================================================================================================='
 
-sudo chmod 640 /etc/shadow
-
-sudo chmod 644 /etc/passwd
-
 echo 'Ubuntu:urubu100' | sudo chpasswd
-
 echo 'Root:urubu100' | sudo chpasswd
 
 echo '========================================================================================================='
 echo 'Instalando Git'
 echo '========================================================================================================='
 
-sudo apt install git 
+sudo apt install git -y
 
 echo '========================================================================================================='
 echo 'Verificando versao do Git'
-git --version
+git --version || { echo "Erro ao verificar a versão do Git"; exit 1; }
 echo '========================================================================================================='
 
 echo '========================================================================================================='
@@ -37,7 +32,7 @@ sudo apt install docker.io -y
 
 echo '========================================================================================================='
 echo 'Verificando versao do Docker'
-docker --version
+docker --version || { echo "Erro ao verificar a versão do Docker"; exit 1; }
 echo '========================================================================================================='
 
 echo '========================================================================================================='
@@ -45,21 +40,20 @@ echo 'iniciando e ativando servicos Docker'
 echo '========================================================================================================='
 
 sudo systemctl start docker
-
 sudo systemctl enable docker
 
 echo '========================================================================================================='
 echo 'instalando docker compose'
 echo '========================================================================================================='
 
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-ee-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose-ee
-sudo chmod +x /usr/local/bin/docker-compose-ee
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
 echo '========================================================================================================='
 echo 'verificando se foi instalado'
 echo '========================================================================================================='
 
-docker-compose version
+docker-compose --version || { echo "Erro ao verificar a versão do Docker Compose"; exit 1; }
 
 echo '========================================================================================================='
 echo 'Clonando repositorio no github: ServGuard'
@@ -72,22 +66,22 @@ echo '==========================================================================
 echo 'Criando novo e mudando de diretorio'
 echo '========================================================================================================='
 
-cd /home/ubuntu/ServGuard-WebSite
+cd /home/ubuntu/ServGuard-WebSite || { echo "Erro ao mudar de diretório"; exit 1; }
 
 echo '========================================================================================================='
 echo 'Rodando docker-compose'
 echo '========================================================================================================='
 
-sudo docker-compose-ee up -d
+docker-compose up -d || { echo "Erro ao executar docker-compose"; exit 1; }
 
 echo '========================================================================================================='
 echo 'Listando as imagens'
 echo '========================================================================================================='
 
-sudo docker images
+docker images
 
 echo '========================================================================================================='
 echo 'Verificando se os containers foram criados'
 echo '========================================================================================================='
 
-sudo docker ps -a
+docker ps -a
